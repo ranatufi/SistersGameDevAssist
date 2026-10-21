@@ -8,5 +8,19 @@ def resource_root() -> Path:
 
 ASSET_DIR = resource_root() / "assets"
 
-def asset_path(filename: str) -> Path:
-    return ASSET_DIR / filename
+IMAGES_DIR = ASSET_DIR / "images"
+SOUNDS_DIR = ASSET_DIR / "sounds"
+
+ADV_DIR = IMAGES_DIR / "adv"
+CHARAS_DIR = IMAGES_DIR / "charas"
+ITEMS_DIR = IMAGES_DIR / "items"
+MAPS_DIR = IMAGES_DIR / "maps"
+
+ADV_BACKGROUND_DIR = ADV_DIR / "backgrounds"
+ADV_RIRI_DIR = ADV_DIR / "riri"
+ADV_SHO_DIR = ADV_DIR / "sho"
+
+CHARAS_RIRI_DIR = CHARAS_DIR / "riri"
+
+def asset_path(dir: Path, filename: str) -> Path:
+    return dir / filename

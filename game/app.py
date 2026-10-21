@@ -1,6 +1,7 @@
 import pygame
 from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, FPS, BG_COLOR, TITLE_NAME
-#from game.paths import asset_path
+from game.assets import AssetsManager
+from game.paths import ADV_RIRI_DIR
 from game.states import GameState
 
 class UnsealEscapeGame():
@@ -10,7 +11,8 @@ class UnsealEscapeGame():
             (SCREEN_WIDTH, SCREEN_HEIGHT),
             pygame.RESIZABLE
         )
-        pygame.display.set_icon(icon_image)
+        self.assets = AssetsManager()
+        pygame.display.set_icon(self.assets.image("riri mini.png", ADV_RIRI_DIR, size=(32, 32)))
         pygame.display.set_caption(TITLE_NAME)
         self.clock = pygame.time.Clock()
         self.background_color = BG_COLOR
