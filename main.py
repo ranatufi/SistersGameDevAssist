@@ -1,4 +1,4 @@
-from game.app import UnsealEscapeGame
+from game.app import GameManager
 
 if __name__ == "__main__":
-    UnsealEscapeGame().run()
+    GameManager().run()
