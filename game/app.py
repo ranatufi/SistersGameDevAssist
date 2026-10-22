@@ -11,10 +11,10 @@ class GameManager():
             (SCREEN_WIDTH, SCREEN_HEIGHT),
             pygame.RESIZABLE
         )
-        self.audio = AudioManager()
-        self.image = ImageManager()
-        self.state = StateManager(self)
-        pygame.display.set_icon(self.image.images["riri mini.png", (32, 32)])
+        self.audio_manager = AudioManager()
+        self.image_manager = ImageManager()
+        self.state_manager = StateManager(self)
+        pygame.display.set_icon(self.image_manager.images["riri mini.png", (32, 32)])
         pygame.display.set_caption(TITLE_NAME)
         self.clock = pygame.time.Clock()
         self.running = True
@@ -23,8 +23,8 @@ class GameManager():
         while self.running:
             dt = min(self.clock.tick(FPS) / 1000, 0.05)
             for event in pygame.event.get():
-                self.state.handle_event(event)
-            self.state.update(dt)
-            self.state.draw(self.screen)
-        self.audio.close()
+                self.state_manager.handle_event(event)
+            self.state_manager.update(dt)
+            self.state_manager.draw(self.screen)
+        self.audio_manager.close()
         pygame.quit()

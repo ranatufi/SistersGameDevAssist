@@ -6,7 +6,7 @@ from game.paths import ADV_RIRI_DIR
 class ImageManager:
     def __init__(self):
         self.images: dict[tuple[str, tuple[int, int] | None], pygame.Surface] = {}
-        #region 素材取り込み
+        #region ゲーム開始前の素材はここで読み込む
         self.image("riri mini.png", ADV_RIRI_DIR, size=(32, 32))
         #endregion
 

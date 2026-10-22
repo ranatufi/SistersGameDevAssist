@@ -27,6 +27,13 @@ class AudioManager:
             print(f"BGMの再生に失敗: {target_path}, 原因: {e}")
             return
 
+    def stop_bgm(self):
+        if not self.audio_available:
+            return
+        pygame.mixer.music.stop()
+        self.bgm_started = False
+        self.now_playing_bgm = None
+
     def play_se(self, filename: str):
         if not self.audio_available:
             return
