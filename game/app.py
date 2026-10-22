@@ -1,6 +1,7 @@
 import pygame
 from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, FPS, BG_COLOR, TITLE_NAME
-from game.assets import AssetsManager
+from game.images import ImageManager
+from game.audios import AudioManager
 from game.states import GameState
 
 class GameManager():
@@ -10,12 +11,12 @@ class GameManager():
             (SCREEN_WIDTH, SCREEN_HEIGHT),
             pygame.RESIZABLE
         )
-        self.assets = AssetsManager()
-        pygame.display.set_icon(self.assets.images["riri mini.png", (32, 32)])
+        self.image = ImageManager()
+        self.audio = AudioManager()
+        pygame.display.set_icon(self.image.images["riri mini.png", (32, 32)])
         pygame.display.set_caption(TITLE_NAME)
         self.clock = pygame.time.Clock()
         self.running = True
-
         self.state = GameState.TITLE
 
     def handle_event(self, event):
@@ -36,8 +37,10 @@ class GameManager():
         match self.state:
             case GameState.TITLE:
                 self.state = GameState.PROLOGUE
+                self.audio.play_bgm("死神のリスト.mp3")
             case GameState.PROLOGUE:
                 self.state = GameState.STORY
+                self.audio.play_bgm("死神のリスト.mp3")
             case GameState.STORY:
                 self.state = GameState.EXPLORATION
             case GameState.EXPLORATION:
@@ -74,6 +77,5 @@ class GameManager():
                 self.handle_event(event)
             self.update(dt)
             self.draw()
-
-        #self.audio.close()
+        self.audio.close()
         pygame.quit()
