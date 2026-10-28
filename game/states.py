@@ -1,5 +1,6 @@
 import pygame
-from game.constants import BG_COLOR
+from game.paths import ADV_BACKGROUND_DIR
+from game.constants import BG_COLOR, SCREEN_WIDTH, SCREEN_HEIGHT
 from enum import Enum, auto
 from abc import ABC, abstractmethod
 
@@ -35,6 +36,13 @@ class BaseState(ABC):
     def handle_event(self, event):
         pass
 
+    def draw_centered_text(self, screen, text, y, font=None, color=(255, 255, 255),):
+        if font is None:
+            font = self.font
+        surface = font.render(text, True, color)
+        rect = surface.get_rect(center=(SCREEN_WIDTH // 2, y))
+        screen.blit(surface, rect)
+
 class StateManager:
     def __init__(self, game, initial_state=GameState.TITLE):
         self.game = game
@@ -48,27 +56,28 @@ class StateManager:
         self.current_state.enter()
 
     def change_state(self, new_state):
-        if new_state in self.states:
-            self.current_state.exit()
-            self.current_state = self.states[new_state]
-            self.current_state.enter()
-        else:
+        if new_state not in self.states:
             raise ValueError(f"存在しないステート: {new_state}")
+        if self.current_state is self.states[new_state]:
+            return
+        self.current_state.exit()
+        self.current_state = self.states[new_state]
+        self.current_state.enter()
     
     def handle_event(self, event):
-        match event.type:
-            case pygame.QUIT:
+        if event.type == pygame.QUIT:
+            self.game.running = False
+            self.current_state.exit()
+            return
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
                 self.game.running = False
                 self.current_state.exit()
-            case pygame.KEYDOWN:
-                match event.key:
-                    case pygame.K_ESCAPE:
-                        self.game.running = False
-                        self.current_state.exit()
-                    case pygame.K_F11:
-                        pygame.display.toggle_fullscreen()
-            case _:
-                self.current_state.handle_event(event)
+                return
+            if event.key == pygame.K_F11:
+                self.game.toggle_fullscreen()
+                return
+        self.current_state.handle_event(event)
 
     def update(self, dt):
         self.current_state.update(dt)
@@ -76,22 +85,22 @@ class StateManager:
     def draw(self, screen):
         screen.fill(BG_COLOR)
         self.current_state.draw(screen)
-        pygame.display.flip()
 
 class TitleState(BaseState):
     def __init__(self, game, state_manager):
         super().__init__(game, state_manager)
     
     def enter(self):
-        pass
+        self.title_image = self.game.image_manager.image("taitoru.png", ADV_BACKGROUND_DIR, (SCREEN_WIDTH, SCREEN_HEIGHT),)
 
+    def draw(self, screen):
+        if self.title_image is not None:
+            screen.blit(self.title_image, (0, 0))
+    
     def exit(self):
         pass
 
     def update(self, dt):
-        pass
-
-    def draw(self, screen):
         pass
 
     def handle_event(self, event):
@@ -106,7 +115,7 @@ class PrologueState(BaseState):
         super().__init__(game, state_manager)
     
     def enter(self):
-        self.game.audio.play_bgm("死神のリスト.mp3")
+        self.game.audio_manager.play_bgm("死神のリスト.mp3")
 
     def exit(self):
         pass
@@ -129,7 +138,7 @@ class StoryState(BaseState):
         super().__init__(game, state_manager)
 
     def enter(self):
-        self.game.audio.play_bgm("バクテリア.mp3")
+        self.game.audio_manager.play_bgm("バクテリア.mp3")
 
     def exit(self):
         pass

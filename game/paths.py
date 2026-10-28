@@ -22,7 +22,7 @@ MAPS_DIR = IMAGES_DIR / "maps"
 BGM_DIR = AUDIOS_DIR / "bgm"
 SE_DIR = AUDIOS_DIR / "se"
 
-ADV_BACKGROUND_DIR = ADV_DIR / "backgrounds"
+ADV_BACKGROUND_DIR = ADV_DIR / "background"
 ADV_RIRI_DIR = ADV_DIR / "riri"
 ADV_SHO_DIR = ADV_DIR / "sho"
 
