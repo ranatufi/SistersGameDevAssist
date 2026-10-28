@@ -45,6 +45,8 @@ class BaseState(ABC):
 
 class StateManager:
     def __init__(self, game, initial_state=GameState.TITLE):
+        from game.exploration.exploration_state import ExplorationState
+        
         self.game = game
         self.states = {
             GameState.TITLE: TitleState(game, self),
